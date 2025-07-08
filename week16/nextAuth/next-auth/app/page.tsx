@@ -1,14 +1,21 @@
-"use client"
+import { AppBar } from "@/components/AppBar";
+import { NEXT_AUTH_CONFIG } from "@/app/lib/auth";
+import { getServerSession } from "next-auth"
+import { signIn } from "next-auth/react";
 
-import { AppBar }   from "@/components/AppBar"
-import { useSession } from "next-auth/react"
-export default function Home() {
-  const session = useSession();
+async function getUser() {
+  const session = await getServerSession(NEXT_AUTH_CONFIG);
+  return session;
+}
+
+export default async function Home() {
+  const session = await getUser();
 
   return (
     <div>
-      <AppBar/>
-      {JSON.stringify(session.data?.user)}
+      <AppBar />
+      userComponent: 
+      {JSON.stringify(session)}
     </div>
   );
 }

@@ -14,8 +14,10 @@ export const AppBar = () => {
     //     </div>
     // )
 
-    return <div>
-        <button onClick={()=> signIn()}>Signin</button>
-        <button onClick={()=> signOut()}>Signout</button>
-    </div>
+    return (
+        <div>
+            <button onClick={()=> signIn()}>Signin</button>
+            <button onClick={()=> signOut()}>Signout</button>
+        </div>
+    )
 }

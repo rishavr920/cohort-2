@@ -11,7 +11,7 @@
 // } 
 
 
-import { NEXT_AUTH_CONFIG } from "@/lib/auth"
+import { NEXT_AUTH_CONFIG } from "@/app/lib/auth"
 import NextAuth from "next-auth"
 import CredentialsProvider from 'next-auth/providers/credentials'
 // const handler = NextAuth({
