@@ -1,18 +1,34 @@
-import { Hono } from 'hono'
-import { userRouter } from './routes/user'
-import { blogRouter } from './routes/blog'
+// server.ts or index.ts
+import express from 'express';
+import dotenv from 'dotenv';
+import userRouter from './user'; 
+import blogRouter from './blog';
+import { initMiddleware } from './middleware'
 
-const app = new Hono<{
-  //bcoz ts don't know about the env variables,and .toml file so have to tell type of database_url
-  Bindings: {
-    DATABASE_URL: string,
-    JWT_SECRET: string,
-  }
-}>();
+dotenv.config();
 
-app.route("/api/v1/user",userRouter);  //api/v1/user is the base path aage wala userRouter me lkha h for signup /signup add ho jayega.
-app.route("/api/v1/blog",blogRouter);
-  
+const app = express();
+const PORT = process.env.PORT || 3000;
 
+// Middleware
+// app.use(cors());
+app.use(express.json());
 
-export default app
+// 🔐 Inject middleware before blog routes
+initMiddleware(app);
+
+// Routes (same as Hono path)
+app.use('/api/v1/user', userRouter);  // /signup, /signin
+app.use('/api/v1/blog', blogRouter);  // /, /bulk, /:id etc.
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running at http://localhost:${PORT}`);
+});
+
+// let blogRouter;
+// try {
+//   blogRouter = require('./blog').default;
+//   console.log('✅ blogRouter imported');
+// } catch (e) {
+//   console.error('❌ Error importing blogRouter:', e);
+// }

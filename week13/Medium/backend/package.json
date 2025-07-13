@@ -1,18 +1,24 @@
 {
-  "name": "backend",
+  "name": "medium-backend",
+  "type": "commonjs",
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy --minify"
+    "dev": "nodemon src/index.ts"
   },
   "dependencies": {
     "@100xdevs/medium-common": "^1.0.0",
-    "@prisma/client": "^6.2.1",
-    "@prisma/extension-accelerate": "^1.2.1",
-    "hono": "^4.6.16",
-    "prisma": "^6.2.1"
+    "@prisma/client": "^6.11.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250109.0",
-    "wrangler": "^3.101.0"
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.0.12",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.11.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }
