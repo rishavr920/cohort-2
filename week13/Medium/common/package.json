@@ -1,0 +1,18 @@
+{
+  "name": "@rishav1712/common",
+  "version": "1.0.3",
+  "description": "changes typo",
+  "keywords": [],
+  "license": "MIT",
+  "author": "rishav",
+  "type": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {}
+}
