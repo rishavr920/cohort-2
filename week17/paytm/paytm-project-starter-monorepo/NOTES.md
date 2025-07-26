@@ -93,3 +93,34 @@ and here we can see the information of user in User table there is other way tha
 simply go to cd packages/db after that npx prisma studio.
 
 11. from here we started building bank_webhook_handler in which first we create folder and then initialize backend like npm init -y and then npx tsc --init after than install dependencies npm i esbuild express @types/express then updating the schema in db adding balance and OnRampStatus table in db.
+
+what is OnRampStatus so basically it is enum which state whether trasaction is successfull,failure or processing
+
+updated in schema
+model OnRampTransaction {
+  id          Int           @id @default(autoincrement())
+  status      OnRampStatus
+  token       String        @unique
+  provider    String
+  amount      Int
+  startTime   DateTime
+  userId      Int
+  user        User          @relation(fields: [userId], references: [id])
+  
+}
+
+model Balance {
+  id          Int           @id @default(autoincrement())
+  userId      Int           @unique
+  amount      Int
+  locked      Int
+  user        User          @relation(fields: [userId], references: [id])
+}
+
+enum OnRampStatus {
+  Success
+  Failure
+  Processing
+}
+
+after that goto cd packages/db and use command npx prisma migrate dev --name added balances_and_onramp then npx prisma generate
