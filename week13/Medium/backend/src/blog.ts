@@ -94,7 +94,18 @@ blogRouter.put('/', async (req, res) => {
 // 📃 Get all blogs
 blogRouter.get('/bulk', async (req, res) => {
   try {
-    const posts = await prisma.post.findMany();
+    const posts = await prisma.post.findMany({
+      select: {
+        content: true,
+        title: true,
+        id: true,
+        author: {
+          select: {
+            name: true
+          }
+        }
+      }
+    });
     res.json({ posts });
   } catch (e) {
     res.status(500).json({ error: 'Error fetching blogs' });
@@ -108,11 +119,21 @@ blogRouter.get('/:id', async (req, res) => {
   try {
     const post = await prisma.post.findUnique({
       where: { id },
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        author: {
+            select: {
+              name: true
+            }
+        }
+      }
     });
 
     if (!post) return res.status(404).json({ error: 'Post not found' });
 
-    res.json(post);
+    res.json({ post });
   } catch (e) {
     res.status(500).json({ error: 'Error fetching blog post' });
   }
