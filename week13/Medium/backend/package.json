@@ -2,8 +2,11 @@
   "name": "medium-backend",
   "type": "commonjs",
   "scripts": {
-    "dev": "nodemon src/index.ts"
-  },
+  "dev": "nodemon src/index.ts",
+  "build": "tsc",
+  "start": "node dist/index.js"
+},
+
   "dependencies": {
     "@prisma/client": "^6.11.1",
     "@rishav1712/common": "^1.0.3",
