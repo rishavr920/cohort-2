@@ -3,7 +3,6 @@ import { Spinner } from "../components/Spinner";
 import { useBlog } from "../hooks";
 import { useParams } from "react-router-dom";
 import { Appbar } from "../components/Appbar";
-//atomFamilies /selectorFamilies
 
 export const Blog = () => {
   const { id } = useParams();
@@ -17,6 +16,18 @@ export const Blog = () => {
           <div className="flex justify-center">
             <Spinner />
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!blog) {
+    // Handle blog not found
+    return (
+      <div>
+        <Appbar />
+        <div className="h-screen flex flex-col justify-center items-center">
+          <p className="text-xl font-semibold">Blog not found</p>
         </div>
       </div>
     );
