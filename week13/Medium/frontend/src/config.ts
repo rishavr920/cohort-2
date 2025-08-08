@@ -1,1 +1,1 @@
-export const BACKEND_URL = "http://localhost:8787"
+export const BACKEND_URL = "https://medium-backend-t9c6.onrender.com"
