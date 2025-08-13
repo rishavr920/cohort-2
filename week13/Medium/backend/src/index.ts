@@ -12,10 +12,21 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+const allowedOrigins = [
+  'http://localhost:5173', // local dev
+  'https://mediumfrontend-alpha.vercel.app' // prod vercel
+];
+
 
 app.use(cors({
-  origin: 'http://localhost:5173', // or use '*' for public APIs
-  credentials: true,               // if you're using cookies or auth headers
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS blocked: ' + origin));
+    }
+  },
+  credentials: true
 }));
 app.use(express.json());
 
