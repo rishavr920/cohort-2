@@ -13,6 +13,7 @@ model User {
   name     String?
   password String
   posts    Post[]
+  comments Comment[]
 }
 
 model Post {
@@ -22,4 +23,17 @@ model Post {
   published Boolean @default(false)
   authorId  String
   author    User    @relation(fields: [authorId], references: [id])
+  comments  Comment[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  content   String
+  createdAt DateTime @default(now())
+
+  authorId  String
+  postId    String
+
+  author    User     @relation(fields: [authorId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
 }

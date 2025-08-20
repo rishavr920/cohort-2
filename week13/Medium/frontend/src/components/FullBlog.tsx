@@ -1,8 +1,9 @@
 import type { Blog } from "../hooks";
 import { Appbar } from "./Appbar";
 import { Avatar } from "./BlogCard";
+import { CommentContainer } from "./CommentContainer";
 
-export const FullBlog = ({ blog }: { blog: Blog }) => {
+export const FullBlog = ({ blog, id }: { blog: Blog; id: any }) => {
   return (
     <div>
       <Appbar />
@@ -20,6 +21,9 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
             <div className="pt-4 whitespace-pre-line break-words">
               {blog.content}
             </div>
+
+            {/* ✅ Comment system (box + list) */}
+            <CommentContainer postId={id} />
           </div>
 
           {/* Author Section */}
@@ -45,4 +49,3 @@ export const FullBlog = ({ blog }: { blog: Blog }) => {
     </div>
   );
 };
-

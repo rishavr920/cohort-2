@@ -35,7 +35,7 @@ export const Blog = () => {
 
   return (
     <div>
-      <FullBlog blog={blog} />
+      <FullBlog blog={blog} id = {id} />
     </div>
   );
 };

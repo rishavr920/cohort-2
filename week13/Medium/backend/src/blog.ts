@@ -69,14 +69,27 @@ blogRouter.post('/', async (req, res) => {
 
 
 // ✏️ Update blog post
-blogRouter.put('/', async (req, res) => {
+blogRouter.put('/:id', async (req, res) => {
   const userId = (req as any).userId;
   const body = req.body;
 
-  const { success } = updateBlogInput.safeParse(body);
-  if (!success) return res.status(411).json({ error: 'Invalid input' });
+  // const { success } = updateBlogInput.safeParse(body);
+  // if (!success) return res.status(411).json({ error: 'Invalid input' });
 
   try {
+     // Check if the post exists and belongs to the current user
+    const existingPost = await prisma.post.findUnique({
+      where: { id: body.id },
+    });
+
+    if (!existingPost) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    if (existingPost.authorId !== userId) {
+      return res.status(403).json({ error: 'Not authorized to update this post' });
+    }
+
     const blog = await prisma.post.update({
       where: { id: body.id },
       data: {
@@ -103,6 +116,11 @@ blogRouter.get('/bulk', async (req, res) => {
           select: {
             name: true
           }
+        },
+        comments: {
+          include: {
+            author: true
+          }
         }
       }
     });
@@ -112,6 +130,37 @@ blogRouter.get('/bulk', async (req, res) => {
   }
 });
 
+
+blogRouter.get('/my-posts', async (req, res) => {
+  const userId = (req as any).userId; // from auth middleware
+  try {
+    const posts = await prisma.post.findMany({
+      where: { authorId: userId }, // 👈 filter by logged-in user
+      select: {
+        content: true,
+        title: true,
+        id: true,
+        author: {
+          select: {
+            name: true,
+          },
+        },
+        comments: {
+          include: {
+            author: true,
+          },
+        },
+      },
+    });
+
+    res.json({ posts });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Error fetching blogs' });
+  }
+});
+
+    
 // 🔍 Get blog by ID (after /bulk)
 blogRouter.get('/:id', async (req, res) => {
   const id = req.params.id;
@@ -127,6 +176,11 @@ blogRouter.get('/:id', async (req, res) => {
             select: {
               name: true
             }
+        },
+        comments: {
+          include: {
+            author: true
+          }
         }
       }
     });
@@ -139,4 +193,35 @@ blogRouter.get('/:id', async (req, res) => {
   }
 });
 
+// delete blog 
+blogRouter.delete('/:id',  async (req, res) => {
+
+  const userId = (req as any).userId;
+  const postId = req.params.id;
+
+  try{
+    const existingPost = await prisma.post.findUnique({
+      where: {id: postId},
+    });
+
+    if(!existingPost){
+      return res.status(404).json({error: "Post not found"});
+    }
+
+    if(existingPost.authorId !== userId){
+      return res.status(403).json({error: "Not authorized to delete this post"});
+    }
+
+    await prisma.post.delete({
+      where: {id : postId},
+    });
+
+    res.send("Post deleted successfully");
+  }
+  catch(e){
+    console.error(e);
+    res.status(500).json({ error : "Error deleting blog post"});
+  }
+
+})
 export default blogRouter

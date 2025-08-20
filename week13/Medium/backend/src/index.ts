@@ -3,6 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import userRouter from './user'; 
 import blogRouter from './blog';
+import commentRouter from './comment';
 import { initMiddleware } from './middleware'
 import cors from 'cors';
 
@@ -36,7 +37,7 @@ initMiddleware(app);
 // Routes (same as Hono path)
 app.use('/api/v1/user', userRouter);  // /signup, /signin
 app.use('/api/v1/blog', blogRouter);  // /, /bulk, /:id etc.
-
+app.use('/api/v1/post',commentRouter);
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
 });
